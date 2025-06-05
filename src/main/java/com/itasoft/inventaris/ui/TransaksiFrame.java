@@ -24,7 +24,7 @@ public class TransaksiFrame extends JFrame {
     private JTextField txtJumlah;
     private JTextArea txtKeterangan;
     private JButton btnSimpanTransaksi;
-    private JTable historyTable; // Tabel untuk histori transaksi
+    private JTable historyTable;
     private DefaultTableModel historyTableModel;
 
     public TransaksiFrame(JFrame parent, String tipeTransaksi, User currentUser) {
@@ -37,33 +37,49 @@ public class TransaksiFrame extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout(10,10));
+        setLayout(new BorderLayout(10, 10));
 
         // Panel Form Transaksi
         JPanel formPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5,5,5,5);
+        gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        int y=0;
-        gbc.gridx = 0; gbc.gridy = y; formPanel.add(new JLabel("Pilih Barang:"), gbc);
-        gbc.gridx = 1; gbc.gridy = y++; cmbBarang = new JComboBox<>(); formPanel.add(cmbBarang, gbc);
+        int y = 0;
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        formPanel.add(new JLabel("Pilih Barang:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = y++;
+        cmbBarang = new JComboBox<>();
+        formPanel.add(cmbBarang, gbc);
         loadBarangToComboBox();
 
-        gbc.gridx = 0; gbc.gridy = y; formPanel.add(new JLabel("Jumlah:"), gbc);
-        gbc.gridx = 1; gbc.gridy = y++; txtJumlah = new JTextField(10); formPanel.add(txtJumlah, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        formPanel.add(new JLabel("Jumlah:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = y++;
+        txtJumlah = new JTextField(10);
+        formPanel.add(txtJumlah, gbc);
 
-        gbc.gridx = 0; gbc.gridy = y; gbc.anchor = GridBagConstraints.NORTHWEST; formPanel.add(new JLabel("Keterangan:"), gbc);
-        gbc.gridx = 1; gbc.gridy = y++;
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        formPanel.add(new JLabel("Keterangan:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = y++;
         txtKeterangan = new JTextArea(3, 20);
         JScrollPane keteranganScrollPane = new JScrollPane(txtKeterangan);
         formPanel.add(keteranganScrollPane, gbc);
 
-        gbc.gridx = 1; gbc.gridy = y; gbc.fill = GridBagConstraints.NONE; gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 1;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.CENTER;
         btnSimpanTransaksi = new JButton("Simpan Transaksi " + (tipeTransaksi.equalsIgnoreCase("MASUK") ? "Masuk" : "Keluar"));
         formPanel.add(btnSimpanTransaksi, gbc);
 
-        // Panel Histori Transaksi
         JPanel historyPanel = new JPanel(new BorderLayout());
         historyPanel.setBorder(BorderFactory.createTitledBorder("Histori Transaksi Terkini"));
         historyTableModel = new DefaultTableModel(
@@ -100,10 +116,10 @@ public class TransaksiFrame extends JFrame {
             Vector<Object> row = new Vector<>();
             row.add(trx.getId());
             row.add(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(trx.getTanggalTransaksi()));
-            row.add(trx.getNamaBarang()); // Sudah di-populate di DAO
+            row.add(trx.getNamaBarang());
             row.add(trx.getTipeTransaksi());
             row.add(trx.getJumlah());
-            row.add(trx.getUsernamePelaku()); // Sudah di-populate di DAO
+            row.add(trx.getUsernamePelaku());
             row.add(trx.getKeterangan());
             historyTableModel.addRow(row);
         }
@@ -145,10 +161,6 @@ public class TransaksiFrame extends JFrame {
 
         if (transaksiDAO.addTransaksi(transaksi)) {
             JOptionPane.showMessageDialog(this, "Transaksi " + tipeTransaksi.toLowerCase() + " barang berhasil disimpan!");
-            // Refresh ComboBox (stoknya berubah)
-            // loadBarangToComboBox(); // Ini akan refresh item tapi tidak otomatis pilih yang sama
-            // Alternatif: update stok barang yang dipilih di ComboBox secara manual jika perlu
-            // atau cukup reload data di tabel barang jika user kembali ke sana.
 
             // Refresh histori transaksi
             loadTransaksiHistory();

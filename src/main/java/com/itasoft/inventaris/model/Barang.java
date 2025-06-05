@@ -18,7 +18,6 @@ public class Barang {
     public Barang() {
     }
 
-    // Constructor, Getter, dan Setter
     public int getId() {
         return id;
     }
@@ -100,7 +99,7 @@ public class Barang {
     }
 
     @Override
-    public String toString() { // Berguna untuk ComboBox
+    public String toString() {
         return namaBarang + " (" + kodeBarang + ")";
     }
 }

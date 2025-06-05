@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class Transaksi {
     private int id;
     private int itemId;
-    private String kodeBarang; // <-- Tambahkan ini
+    private String kodeBarang;
     private String namaBarang;
     private int userId;
     private String usernamePelaku;
@@ -17,7 +17,6 @@ public class Transaksi {
     public Transaksi() {
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }

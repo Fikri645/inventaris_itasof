@@ -7,9 +7,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 // import javax.swing.table.TableRowSorter; // Jika ingin sorting dengan klik header
 import java.awt.*;
-import java.awt.event.ItemEvent; // Untuk JComboBox
-import java.awt.event.KeyAdapter; // Untuk JTextField search on enter
-import java.awt.event.KeyEvent;   // Untuk JTextField search on enter
+import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -54,7 +54,7 @@ public class BarangFrame extends JFrame {
 
         // --- Panel Filter dan Pencarian ---
         JPanel filterSearchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        filterSearchPanel.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
+        filterSearchPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
         filterSearchPanel.add(new JLabel("Cari Barang:"));
         txtSearch = new JTextField(25);
@@ -77,33 +77,82 @@ public class BarangFrame extends JFrame {
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createTitledBorder("Form Data Barang"));
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5,5,5,5);
+        gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST; // Label rata kiri
-        txtId = new JTextField(5); // Tidak ditampilkan, untuk ID saat update
+        txtId = new JTextField(5);
 
         int y = 0;
-        gbc.gridx = 0; gbc.gridy = y; formPanel.add(new JLabel("Kode Barang:"), gbc);
-        gbc.gridx = 1; gbc.gridy = y++; gbc.fill = GridBagConstraints.HORIZONTAL; txtKodeBarang = new JTextField(20); formPanel.add(txtKodeBarang, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        formPanel.add(new JLabel("Kode Barang:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = y++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        txtKodeBarang = new JTextField(20);
+        formPanel.add(txtKodeBarang, gbc);
 
-        gbc.gridx = 0; gbc.gridy = y; gbc.fill = GridBagConstraints.NONE; formPanel.add(new JLabel("Nama Barang:"), gbc);
-        gbc.gridx = 1; gbc.gridy = y++; gbc.fill = GridBagConstraints.HORIZONTAL; txtNamaBarang = new JTextField(20); formPanel.add(txtNamaBarang, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Nama Barang:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = y++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        txtNamaBarang = new JTextField(20);
+        formPanel.add(txtNamaBarang, gbc);
 
-        gbc.gridx = 0; gbc.gridy = y; gbc.fill = GridBagConstraints.NONE; formPanel.add(new JLabel("Kategori:"), gbc);
-        gbc.gridx = 1; gbc.gridy = y++; gbc.fill = GridBagConstraints.HORIZONTAL; txtKategori = new JTextField(20); formPanel.add(txtKategori, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Kategori:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = y++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        txtKategori = new JTextField(20);
+        formPanel.add(txtKategori, gbc);
 
-        gbc.gridx = 0; gbc.gridy = y; gbc.fill = GridBagConstraints.NONE; formPanel.add(new JLabel("Satuan:"), gbc);
-        gbc.gridx = 1; gbc.gridy = y++; gbc.fill = GridBagConstraints.HORIZONTAL; txtSatuan = new JTextField(20); formPanel.add(txtSatuan, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Satuan:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = y++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        txtSatuan = new JTextField(20);
+        formPanel.add(txtSatuan, gbc);
 
-        gbc.gridx = 0; gbc.gridy = y; gbc.fill = GridBagConstraints.NONE; formPanel.add(new JLabel("Stok Awal:"), gbc);
-        gbc.gridx = 1; gbc.gridy = y++; gbc.fill = GridBagConstraints.HORIZONTAL; txtStok = new JTextField(20); txtStok.setText("0"); formPanel.add(txtStok, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Stok Awal:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = y++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        txtStok = new JTextField(20);
+        txtStok.setText("0");
+        formPanel.add(txtStok, gbc);
         // txtStok.setToolTipText("Stok hanya bisa diubah melalui transaksi barang masuk/keluar setelah barang dibuat.");
         // txtStok.setEditable(false); // Nonaktifkan jika stok hanya diupdate via transaksi
 
-        gbc.gridx = 0; gbc.gridy = y; gbc.fill = GridBagConstraints.NONE; formPanel.add(new JLabel("Harga Beli:"), gbc);
-        gbc.gridx = 1; gbc.gridy = y++; gbc.fill = GridBagConstraints.HORIZONTAL; txtHargaBeli = new JTextField(20); formPanel.add(txtHargaBeli, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Harga Beli:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = y++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        txtHargaBeli = new JTextField(20);
+        formPanel.add(txtHargaBeli, gbc);
 
-        gbc.gridx = 0; gbc.gridy = y; gbc.fill = GridBagConstraints.NONE; formPanel.add(new JLabel("Harga Jual:"), gbc);
-        gbc.gridx = 1; gbc.gridy = y++; gbc.fill = GridBagConstraints.HORIZONTAL; txtHargaJual = new JTextField(20); formPanel.add(txtHargaJual, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Harga Jual:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = y++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        txtHargaJual = new JTextField(20);
+        formPanel.add(txtHargaJual, gbc);
 
         // Panel Tombol Form
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
@@ -116,16 +165,22 @@ public class BarangFrame extends JFrame {
         buttonPanel.add(btnDelete);
         buttonPanel.add(btnClear);
 
-        gbc.gridx = 0; gbc.gridy = y; gbc.gridwidth = 2; gbc.fill = GridBagConstraints.NONE; gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 0;
+        gbc.gridy = y;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.CENTER;
         formPanel.add(buttonPanel, gbc);
 
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
 
         // --- Tabel Data Barang ---
-        tableModel = new DefaultTableModel(new String[]{"ID", "Kode", "Nama Barang", "Kategori", "Satuan", "Stok", "Harga Beli", "Harga Jual"}, 0){
+        tableModel = new DefaultTableModel(new String[]{"ID", "Kode", "Nama Barang", "Kategori", "Satuan", "Stok", "Harga Beli", "Harga Jual"}, 0) {
             @Override
-            public boolean isCellEditable(int row, int column) { return false; }
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
         barangTable = new JTable(tableModel);
         JScrollPane scrollPaneTable = new JScrollPane(barangTable);
@@ -136,7 +191,7 @@ public class BarangFrame extends JFrame {
 
         // --- Layout Utama Frame ---
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(formPanel), scrollPaneTable);
-        splitPane.setDividerLocation(390); // Atur posisi pembagi awal
+        splitPane.setDividerLocation(390);
 
         setLayout(new BorderLayout(0, 5)); // Jarak vertikal antar komponen BorderLayout
         add(filterSearchPanel, BorderLayout.NORTH);
@@ -144,11 +199,10 @@ public class BarangFrame extends JFrame {
 
         loadBarangToTable(); // Muat semua data awal
 
-        // --- Action Listeners ---
         btnTambah.addActionListener(e -> addBarangAction());
         btnUpdate.addActionListener(e -> updateBarangAction());
         btnDelete.addActionListener(e -> deleteBarangAction());
-        btnClear.addActionListener(e -> clearFormAction()); // Ganti nama agar konsisten
+        btnClear.addActionListener(e -> clearFormAction());
 
         // if (btnSearch != null) { // Jika tombol Cari eksplisit ada
         //     btnSearch.addActionListener(e -> loadBarangToTable());
@@ -359,7 +413,6 @@ public class BarangFrame extends JFrame {
                 populateCategoryFilter();
                 clearFormAction();
             }
-            // Pesan error spesifik jika gagal (misal karena FK constraint) sudah ditangani di DAO
         }
     }
 

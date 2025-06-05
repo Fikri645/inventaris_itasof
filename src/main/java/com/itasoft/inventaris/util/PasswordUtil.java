@@ -6,7 +6,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class PasswordUtil {
 
-    // Metode untuk menghasilkan hash SHA-256 dari password
     public static String hashPassword(String plainTextPassword) {
         if (plainTextPassword == null) {
             return null;
@@ -17,12 +16,9 @@ public class PasswordUtil {
                     plainTextPassword.getBytes(StandardCharsets.UTF_8));
             return bytesToHex(encodedhash);
         } catch (NoSuchAlgorithmException e) {
-            // Algoritma SHA-256 seharusnya selalu ada
             System.err.println("Error hashing password: Algoritma SHA-256 tidak ditemukan.");
             e.printStackTrace();
-            // Dalam kasus nyata, ini adalah error kritis dan harus ditangani dengan baik
-            // Mungkin melempar RuntimeException atau mengembalikan null dan ditangani di pemanggil
-            return null; // Atau throw new RuntimeException("SHA-256 not available", e);
+            return null;
         }
     }
 
@@ -48,7 +44,6 @@ public class PasswordUtil {
         return hashedPasswordFromDb.equals(hashedPlainTextPassword);
     }
 
-    // (Opsional) Main method untuk menguji atau generate hash
     public static void main(String[] args) {
         String pass1 = "admin123";
         String hashedPass1 = hashPassword(pass1);

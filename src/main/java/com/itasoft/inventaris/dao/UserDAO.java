@@ -2,7 +2,7 @@ package com.itasoft.inventaris.dao;
 
 import com.itasoft.inventaris.model.User;
 import com.itasoft.inventaris.util.DatabaseConnection;
-import com.itasoft.inventaris.util.PasswordUtil; // <-- Tambahkan import ini
+import com.itasoft.inventaris.util.PasswordUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,7 +35,6 @@ public class UserDAO {
                         user = new User();
                         user.setId(rs.getInt("id"));
                         user.setUsername(rs.getString("username"));
-                        // Jangan set password plain text ke objek User setelah validasi
                         user.setNamaLengkap(rs.getString("nama_lengkap"));
                         user.setRole(rs.getString("role"));
                     }
@@ -48,7 +47,7 @@ public class UserDAO {
         return user;
     }
 
-    // Jika Anda membuat fitur registrasi atau ganti password, gunakan PasswordUtil.hashPassword()
+    // Jika membuat fitur registrasi atau ganti password, gunakan PasswordUtil.hashPassword()
     public boolean registerUser(String username, String plainTextPassword, String namaLengkap, String role) {
         String hashedPassword = PasswordUtil.hashPassword(plainTextPassword);
         if (hashedPassword == null) {

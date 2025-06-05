@@ -3,7 +3,7 @@ package com.itasoft.inventaris.dao;
 import com.itasoft.inventaris.model.Barang;
 import com.itasoft.inventaris.util.DatabaseConnection;
 
-import javax.swing.*; // Untuk JOptionPane pada error delete
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -206,7 +206,6 @@ public class BarangDAO {
         return barangs;
     }
 
-    // getAllBarang sekarang menggunakan getBarangFiltered
     public List<Barang> getAllBarang() {
         return getBarangFiltered(null, "Semua Kategori"); // Default: tampilkan semua
     }
@@ -226,11 +225,6 @@ public class BarangDAO {
         return barang;
     }
 
-    // Metode ini akan digunakan oleh TransaksiDAO
-    // Pastikan visibility-nya sesuai (default/package-private atau protected)
-    // atau public jika TransaksiDAO ada di paket berbeda dan memerlukan akses langsung.
-    // Untuk saat ini, kita asumsikan TransaksiDAO ada di paket yang sama atau akan
-    // memanggil metode ini dengan cara yang sesuai.
     protected boolean updateStock(int barangId, int quantityChange, Connection conn) throws SQLException {
         String sqlCheckStock = "SELECT stok_saat_ini FROM items WHERE id = ?";
         String sqlUpdate = "UPDATE items SET stok_saat_ini = stok_saat_ini + ? WHERE id = ?";

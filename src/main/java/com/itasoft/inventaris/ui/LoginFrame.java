@@ -2,7 +2,6 @@ package com.itasoft.inventaris.ui;
 
 import com.itasoft.inventaris.dao.UserDAO;
 import com.itasoft.inventaris.model.User;
-// import com.itasoft.inventaris.MainApp; // Jika ingin memanggil MainFrame dari sini
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,14 +27,32 @@ public class LoginFrame extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        gbc.gridx = 0; gbc.gridy = 0; add(new JLabel("Username:"), gbc);
-        gbc.gridx = 1; gbc.gridy = 0; gbc.gridwidth = 2; usernameField = new JTextField(15); add(usernameField, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(new JLabel("Username:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        usernameField = new JTextField(15);
+        add(usernameField, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1; add(new JLabel("Password:"), gbc);
-        gbc.gridx = 1; gbc.gridy = 1; gbc.gridwidth = 2; passwordField = new JPasswordField(15); add(passwordField, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        add(new JLabel("Password:"), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        passwordField = new JPasswordField(15);
+        add(passwordField, gbc);
 
-        gbc.gridx = 1; gbc.gridy = 2; gbc.gridwidth = 1; gbc.anchor = GridBagConstraints.CENTER; gbc.fill = GridBagConstraints.NONE;
-        loginButton = new JButton("Login"); add(loginButton, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
+        loginButton = new JButton("Login");
+        add(loginButton, gbc);
 
         loginButton.addActionListener(new ActionListener() {
             @Override

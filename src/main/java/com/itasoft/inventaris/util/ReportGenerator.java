@@ -2,8 +2,8 @@ package com.itasoft.inventaris.util;
 
 import com.itasoft.inventaris.model.Barang;
 import com.itasoft.inventaris.dao.BarangDAO;
-import com.itasoft.inventaris.model.Transaksi; // <-- Tambahkan import
-import com.itasoft.inventaris.dao.TransaksiDAO; // <-- Tambahkan import
+import com.itasoft.inventaris.model.Transaksi;
+import com.itasoft.inventaris.dao.TransaksiDAO;
 
 import javax.swing.*;
 import java.io.FileOutputStream;
@@ -22,9 +22,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ReportGenerator {
 
-    // --- Metode Laporan Stok (CSV dan Excel sudah ada) ---
     public static void generateStockReportCSV(JFrame parentFrame) {
-        // ... (kode yang sudah ada, tidak perlu diubah) ...
         BarangDAO barangDAO = new BarangDAO();
         List<Barang> barangs = barangDAO.getAllBarang();
 
@@ -70,7 +68,6 @@ public class ReportGenerator {
     }
 
     public static void generateStockReportExcel(JFrame parentFrame) {
-        // ... (kode yang sudah ada, tidak perlu diubah) ...
         BarangDAO barangDAO = new BarangDAO();
         List<Barang> barangs = barangDAO.getAllBarang();
         if (barangs.isEmpty()) {
@@ -129,7 +126,8 @@ public class ReportGenerator {
             }
         }
     }
-    private static String escapeCsv(String data) { // Helper CSV
+
+    private static String escapeCsv(String data) {
         if (data == null) return "";
         String escapedData = data.replaceAll("\\R", " ");
         if (escapedData.contains(",") || escapedData.contains("\"") || escapedData.contains("'")) {
@@ -139,7 +137,6 @@ public class ReportGenerator {
         return escapedData;
     }
 
-    // --- Metode Baru untuk Laporan Transaksi (CSV) ---
     public static void generateTransactionReportCSV(JFrame parentFrame) {
         TransaksiDAO transaksiDAO = new TransaksiDAO();
         List<Transaksi> transaksis = transaksiDAO.getAllTransaksi();
@@ -165,7 +162,6 @@ public class ReportGenerator {
             }
 
             try (FileWriter csvWriter = new FileWriter(fileToSave)) {
-                // Header CSV
                 csvWriter.append("ID Transaksi,Tanggal,Kode Barang,Nama Barang,Tipe,Jumlah,User Pelaku,Keterangan\n");
                 SimpleDateFormat dateFormatData = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -189,7 +185,6 @@ public class ReportGenerator {
         }
     }
 
-    // --- Metode Baru untuk Laporan Transaksi (Excel) ---
     public static void generateTransactionReportExcel(JFrame parentFrame) {
         TransaksiDAO transaksiDAO = new TransaksiDAO();
         List<Transaksi> transaksis = transaksiDAO.getAllTransaksi();

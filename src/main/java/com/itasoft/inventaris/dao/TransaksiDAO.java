@@ -2,7 +2,7 @@ package com.itasoft.inventaris.dao;
 
 import com.itasoft.inventaris.model.Transaksi;
 import com.itasoft.inventaris.util.DatabaseConnection;
-// import com.itasoft.inventaris.model.Barang; // Tidak perlu jika sudah di-join
+// import com.itasoft.inventaris.model.Barang;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -79,7 +79,7 @@ public class TransaksiDAO {
 
     public List<Transaksi> getAllTransaksi() {
         List<Transaksi> transaksis = new ArrayList<>();
-        String sql = "SELECT st.id, st.item_id, i.kode_barang, i.nama_barang, st.user_id, u.username AS username_pelaku, " + // <-- i.kode_barang ditambahkan
+        String sql = "SELECT st.id, st.item_id, i.kode_barang, i.nama_barang, st.user_id, u.username AS username_pelaku, " +
                 "st.tipe_transaksi, st.jumlah, st.tanggal_transaksi, st.keterangan " +
                 "FROM stock_transactions st " +
                 "JOIN items i ON st.item_id = i.id " +
@@ -98,7 +98,7 @@ public class TransaksiDAO {
                 Transaksi transaksi = new Transaksi();
                 transaksi.setId(rs.getInt("id"));
                 transaksi.setItemId(rs.getInt("item_id"));
-                transaksi.setKodeBarang(rs.getString("kode_barang")); // <-- Set kode barang
+                transaksi.setKodeBarang(rs.getString("kode_barang"));
                 transaksi.setNamaBarang(rs.getString("nama_barang"));
                 transaksi.setUserId(rs.getInt("user_id"));
                 transaksi.setUsernamePelaku(rs.getString("username_pelaku"));

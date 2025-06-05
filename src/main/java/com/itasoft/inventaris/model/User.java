@@ -3,10 +3,10 @@ package com.itasoft.inventaris.model;
 public class User {
     private int id;
     private String username;
-    private String password; // Sebaiknya tidak menyimpan password plain text di model setelah validasi
+    private String password;
     private String namaLengkap;
     private String role;
-    // private java.sql.Timestamp createdAt; // Jika ada di tabel users
+    // private java.sql.Timestamp createdAt;
 
     public User() {
     }

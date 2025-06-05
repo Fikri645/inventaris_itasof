@@ -13,7 +13,7 @@ public class MainFrame extends JFrame {
     private JButton btnManajemenBarang;
     private JButton btnTransaksiMasuk;
     private JButton btnTransaksiKeluar;
-    private JButton btnEksporLaporan; // Nama tombol digeneralisasi
+    private JButton btnEksporLaporan;
     private JButton btnLogout;
 
     public MainFrame(User user) {
@@ -51,23 +51,34 @@ public class MainFrame extends JFrame {
 
         btnManajemenBarang = new JButton("Manajemen Barang");
         btnManajemenBarang.setFont(buttonFont);
-        gbc.gridx = 0; gbc.gridy = 0; menuButtonPanel.add(btnManajemenBarang, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        menuButtonPanel.add(btnManajemenBarang, gbc);
 
         btnTransaksiMasuk = new JButton("Transaksi Barang Masuk");
         btnTransaksiMasuk.setFont(buttonFont);
-        gbc.gridx = 1; gbc.gridy = 0; menuButtonPanel.add(btnTransaksiMasuk, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        menuButtonPanel.add(btnTransaksiMasuk, gbc);
 
         btnTransaksiKeluar = new JButton("Transaksi Barang Keluar");
         btnTransaksiKeluar.setFont(buttonFont);
-        gbc.gridx = 0; gbc.gridy = 1; menuButtonPanel.add(btnTransaksiKeluar, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        menuButtonPanel.add(btnTransaksiKeluar, gbc);
 
-        btnEksporLaporan = new JButton("Ekspor Laporan"); // Teks tombol diubah
+        btnEksporLaporan = new JButton("Ekspor Laporan");
         btnEksporLaporan.setFont(buttonFont);
-        gbc.gridx = 1; gbc.gridy = 1; menuButtonPanel.add(btnEksporLaporan, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        menuButtonPanel.add(btnEksporLaporan, gbc);
 
         btnLogout = new JButton("Logout");
         btnLogout.setFont(buttonFont);
-        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         menuButtonPanel.add(btnLogout, gbc);
 
         mainPanel.add(menuButtonPanel, BorderLayout.CENTER);
@@ -98,7 +109,6 @@ public class MainFrame extends JFrame {
     }
 
     private void showExportOptionsDialog() {
-        // Pilihan diperbanyak
         String[] options = {
                 "Laporan Stok (CSV)",
                 "Laporan Stok (Excel)",
@@ -110,8 +120,8 @@ public class MainFrame extends JFrame {
                 this,
                 "Pilih jenis laporan dan format ekspor:",
                 "Pilih Format Ekspor Laporan",
-                JOptionPane.DEFAULT_OPTION, // Menggunakan DEFAULT_OPTION agar tidak ada ikon spesifik yes/no/cancel
-                JOptionPane.PLAIN_MESSAGE,  // Menggunakan PLAIN_MESSAGE agar tidak ada ikon question/info/warning
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
                 null,
                 options,
                 options[0]
@@ -130,9 +140,7 @@ public class MainFrame extends JFrame {
             case 3: // Laporan Transaksi (Excel)
                 ReportGenerator.generateTransactionReportExcel(this);
                 break;
-            // case 4 atau JOptionPane.CLOSED_OPTION: // Batal atau menutup dialog
             default:
-                // Tidak melakukan apa-apa
                 break;
         }
     }
