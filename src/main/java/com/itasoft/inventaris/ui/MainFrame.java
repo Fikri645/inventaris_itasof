@@ -13,7 +13,7 @@ public class MainFrame extends JFrame {
     private JButton btnManajemenBarang;
     private JButton btnTransaksiMasuk;
     private JButton btnTransaksiKeluar;
-    private JButton btnEksporLaporanStok; // Tombol laporan tunggal
+    private JButton btnEksporLaporan; // Nama tombol digeneralisasi
     private JButton btnLogout;
 
     public MainFrame(User user) {
@@ -28,22 +28,18 @@ public class MainFrame extends JFrame {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setContentPane(mainPanel);
 
-        // --- Status Bar (SOUTH) ---
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         statusLabel = new JLabel("User: " + currentUser.getNamaLengkap() + " (" + currentUser.getRole() + ")");
         statusPanel.add(statusLabel);
         mainPanel.add(statusPanel, BorderLayout.SOUTH);
 
-        // --- Welcome Label (NORTH) ---
         JPanel welcomePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel welcomeLabel = new JLabel("Selamat Datang di Sistem Inventaris!");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 26));
         welcomePanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0));
         mainPanel.add(welcomePanel, BorderLayout.NORTH);
 
-        // --- Menu Buttons (CENTER menggunakan GridBagLayout) ---
         JPanel menuButtonPanel = new JPanel(new GridBagLayout());
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.BOTH;
@@ -51,78 +47,47 @@ public class MainFrame extends JFrame {
         gbc.weighty = 1.0;
         gbc.ipadx = 20;
         gbc.ipady = 30;
-
         Font buttonFont = new Font("Arial", Font.BOLD, 15);
 
-        // Tombol Baris 1
         btnManajemenBarang = new JButton("Manajemen Barang");
         btnManajemenBarang.setFont(buttonFont);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        menuButtonPanel.add(btnManajemenBarang, gbc);
+        gbc.gridx = 0; gbc.gridy = 0; menuButtonPanel.add(btnManajemenBarang, gbc);
 
         btnTransaksiMasuk = new JButton("Transaksi Barang Masuk");
         btnTransaksiMasuk.setFont(buttonFont);
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        menuButtonPanel.add(btnTransaksiMasuk, gbc);
+        gbc.gridx = 1; gbc.gridy = 0; menuButtonPanel.add(btnTransaksiMasuk, gbc);
 
-        // Tombol Baris 2
         btnTransaksiKeluar = new JButton("Transaksi Barang Keluar");
         btnTransaksiKeluar.setFont(buttonFont);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        menuButtonPanel.add(btnTransaksiKeluar, gbc);
+        gbc.gridx = 0; gbc.gridy = 1; menuButtonPanel.add(btnTransaksiKeluar, gbc);
 
-        btnEksporLaporanStok = new JButton("Ekspor Laporan Stok");
-        btnEksporLaporanStok.setFont(buttonFont);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        menuButtonPanel.add(btnEksporLaporanStok, gbc);
+        btnEksporLaporan = new JButton("Ekspor Laporan"); // Teks tombol diubah
+        btnEksporLaporan.setFont(buttonFont);
+        gbc.gridx = 1; gbc.gridy = 1; menuButtonPanel.add(btnEksporLaporan, gbc);
 
-        // Tombol Baris 3 (Logout)
         btnLogout = new JButton("Logout");
         btnLogout.setFont(buttonFont);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
         menuButtonPanel.add(btnLogout, gbc);
 
         mainPanel.add(menuButtonPanel, BorderLayout.CENTER);
 
-        // --- Logika Hak Akses Tombol ---
-        // Cek role pengguna dan atur enabled/disabled tombol Manajemen Barang
         if (currentUser != null && currentUser.getRole() != null) {
-            if ("admin".equalsIgnoreCase(currentUser.getRole())) {
-                btnManajemenBarang.setEnabled(true);
-            } else if ("staff".equalsIgnoreCase(currentUser.getRole())) {
-                btnManajemenBarang.setEnabled(false);
-            } else {
-                // Default jika role tidak dikenali (misalnya, nonaktifkan untuk keamanan)
+            if (!"admin".equalsIgnoreCase(currentUser.getRole())) {
                 btnManajemenBarang.setEnabled(false);
             }
         } else {
-            // Jika user atau role null, nonaktifkan sebagai tindakan pencegahan
             btnManajemenBarang.setEnabled(false);
         }
 
-
-        // Action Listeners
         btnManajemenBarang.addActionListener(e -> openManajemenBarang());
         btnTransaksiMasuk.addActionListener(e -> openTransaksi("MASUK"));
         btnTransaksiKeluar.addActionListener(e -> openTransaksi("KELUAR"));
-        btnEksporLaporanStok.addActionListener(e -> showExportOptionsDialog());
+        btnEksporLaporan.addActionListener(e -> showExportOptionsDialog());
         btnLogout.addActionListener(e -> logout());
     }
 
     private void openManajemenBarang() {
-        // Tambahan: Cek lagi di sini jika tombol bisa di-enable/disable secara dinamis di tempat lain
-        // Namun, karena sudah diatur saat inisialisasi frame, ini mungkin tidak perlu.
-        // if (!btnManajemenBarang.isEnabled()) {
-        //     JOptionPane.showMessageDialog(this, "Anda tidak memiliki hak akses untuk fitur ini.", "Akses Ditolak", JOptionPane.WARNING_MESSAGE);
-        //     return;
-        // }
         BarangFrame barangFrame = new BarangFrame(this);
         barangFrame.setVisible(true);
     }
@@ -133,22 +98,42 @@ public class MainFrame extends JFrame {
     }
 
     private void showExportOptionsDialog() {
-        String[] options = {"Export ke CSV", "Export ke Excel", "Batal"};
+        // Pilihan diperbanyak
+        String[] options = {
+                "Laporan Stok (CSV)",
+                "Laporan Stok (Excel)",
+                "Laporan Transaksi (CSV)",
+                "Laporan Transaksi (Excel)",
+                "Batal"
+        };
         int choice = JOptionPane.showOptionDialog(
                 this,
-                "Pilih format ekspor untuk laporan stok:",
-                "Pilih Format Ekspor",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
+                "Pilih jenis laporan dan format ekspor:",
+                "Pilih Format Ekspor Laporan",
+                JOptionPane.DEFAULT_OPTION, // Menggunakan DEFAULT_OPTION agar tidak ada ikon spesifik yes/no/cancel
+                JOptionPane.PLAIN_MESSAGE,  // Menggunakan PLAIN_MESSAGE agar tidak ada ikon question/info/warning
                 null,
                 options,
                 options[0]
         );
 
-        if (choice == 0) {
-            ReportGenerator.generateStockReportCSV(this);
-        } else if (choice == 1) {
-            ReportGenerator.generateStockReportExcel(this);
+        switch (choice) {
+            case 0: // Laporan Stok (CSV)
+                ReportGenerator.generateStockReportCSV(this);
+                break;
+            case 1: // Laporan Stok (Excel)
+                ReportGenerator.generateStockReportExcel(this);
+                break;
+            case 2: // Laporan Transaksi (CSV)
+                ReportGenerator.generateTransactionReportCSV(this);
+                break;
+            case 3: // Laporan Transaksi (Excel)
+                ReportGenerator.generateTransactionReportExcel(this);
+                break;
+            // case 4 atau JOptionPane.CLOSED_OPTION: // Batal atau menutup dialog
+            default:
+                // Tidak melakukan apa-apa
+                break;
         }
     }
 

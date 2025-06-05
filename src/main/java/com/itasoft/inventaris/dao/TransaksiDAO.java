@@ -2,7 +2,7 @@ package com.itasoft.inventaris.dao;
 
 import com.itasoft.inventaris.model.Transaksi;
 import com.itasoft.inventaris.util.DatabaseConnection;
-import com.itasoft.inventaris.model.Barang; // Untuk mengambil nama barang
+// import com.itasoft.inventaris.model.Barang; // Tidak perlu jika sudah di-join
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TransaksiDAO {
 
-    private BarangDAO barangDAO; // Untuk mengupdate stok di tabel items
+    private BarangDAO barangDAO;
 
     public TransaksiDAO() {
         this.barangDAO = new BarangDAO();
@@ -23,15 +23,16 @@ public class TransaksiDAO {
 
         try {
             conn = DatabaseConnection.getConnection();
-            if (conn == null) return false;
+            if (conn == null) {
+                System.err.println("Koneksi database null saat addTransaksi.");
+                return false;
+            }
+            conn.setAutoCommit(false);
 
-            conn.setAutoCommit(false); // Mulai transaksi database
-
-            // 1. Insert ke stock_transactions
             try (PreparedStatement pstmtTransaksi = conn.prepareStatement(sqlInsertTransaksi, Statement.RETURN_GENERATED_KEYS)) {
                 pstmtTransaksi.setInt(1, transaksi.getItemId());
                 pstmtTransaksi.setInt(2, transaksi.getUserId());
-                pstmtTransaksi.setString(3, transaksi.getTipeTransaksi()); // "MASUK" atau "KELUAR"
+                pstmtTransaksi.setString(3, transaksi.getTipeTransaksi());
                 pstmtTransaksi.setInt(4, transaksi.getJumlah());
                 pstmtTransaksi.setTimestamp(5, transaksi.getTanggalTransaksi() != null ? transaksi.getTanggalTransaksi() : new Timestamp(System.currentTimeMillis()));
                 pstmtTransaksi.setString(6, transaksi.getKeterangan());
@@ -40,47 +41,34 @@ public class TransaksiDAO {
                 if (affectedRows == 0) {
                     throw new SQLException("Gagal menambahkan transaksi, tidak ada baris yang terpengaruh.");
                 }
-                // Ambil ID transaksi yang baru dibuat (opsional, jika diperlukan)
-                // try (ResultSet generatedKeys = pstmtTransaksi.getGeneratedKeys()) {
-                // if (generatedKeys.next()) {
-                // transaksi.setId(generatedKeys.getInt(1));
-                // }
-                // }
             }
 
-            // 2. Update stok di tabel items
             int quantityChange = transaksi.getTipeTransaksi().equalsIgnoreCase("MASUK") ? transaksi.getJumlah() : -transaksi.getJumlah();
-            boolean stockUpdated = barangDAO.updateStock(transaksi.getItemId(), quantityChange, conn); // Gunakan koneksi yang sama
+            boolean stockUpdated = barangDAO.updateStock(transaksi.getItemId(), quantityChange, conn);
 
             if (!stockUpdated) {
                 throw new SQLException("Gagal mengupdate stok barang.");
             }
-
-            conn.commit(); // Commit transaksi jika semua berhasil
+            conn.commit();
             success = true;
-
         } catch (SQLException e) {
             System.err.println("Error saat menambah transaksi: " + e.getMessage());
             e.printStackTrace();
             if (conn != null) {
                 try {
-                    conn.rollback(); // Rollback jika terjadi error
+                    conn.rollback();
                     System.err.println("Transaksi di-rollback.");
                 } catch (SQLException ex) {
                     System.err.println("Error saat rollback: " + ex.getMessage());
-                    ex.printStackTrace();
                 }
             }
-            // Rethrow atau tampilkan pesan ke user
-            if (e.getMessage().startsWith("Stok barang tidak mencukupi")) {
+            if (e.getMessage() != null && e.getMessage().startsWith("Stok barang tidak mencukupi")) {
                 javax.swing.JOptionPane.showMessageDialog(null, e.getMessage(), "Error Transaksi", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
-
         } finally {
             if (conn != null) {
                 try {
-                    conn.setAutoCommit(true); // Kembalikan ke mode auto-commit
-                    // conn.close(); // Jangan tutup koneksi global di sini jika masih dipakai
+                    conn.setAutoCommit(true);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -91,8 +79,7 @@ public class TransaksiDAO {
 
     public List<Transaksi> getAllTransaksi() {
         List<Transaksi> transaksis = new ArrayList<>();
-        // Query ini mengambil juga nama barang dan username pelaku transaksi
-        String sql = "SELECT st.id, st.item_id, i.nama_barang, st.user_id, u.username AS username_pelaku, " +
+        String sql = "SELECT st.id, st.item_id, i.kode_barang, i.nama_barang, st.user_id, u.username AS username_pelaku, " + // <-- i.kode_barang ditambahkan
                 "st.tipe_transaksi, st.jumlah, st.tanggal_transaksi, st.keterangan " +
                 "FROM stock_transactions st " +
                 "JOIN items i ON st.item_id = i.id " +
@@ -102,15 +89,19 @@ public class TransaksiDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
-            if (conn == null) return transaksis;
+            if (conn == null) {
+                System.err.println("Koneksi database null saat getAllTransaksi.");
+                return transaksis;
+            }
 
             while (rs.next()) {
                 Transaksi transaksi = new Transaksi();
                 transaksi.setId(rs.getInt("id"));
                 transaksi.setItemId(rs.getInt("item_id"));
-                transaksi.setNamaBarang(rs.getString("nama_barang")); // dari join
+                transaksi.setKodeBarang(rs.getString("kode_barang")); // <-- Set kode barang
+                transaksi.setNamaBarang(rs.getString("nama_barang"));
                 transaksi.setUserId(rs.getInt("user_id"));
-                transaksi.setUsernamePelaku(rs.getString("username_pelaku")); // dari join
+                transaksi.setUsernamePelaku(rs.getString("username_pelaku"));
                 transaksi.setTipeTransaksi(rs.getString("tipe_transaksi"));
                 transaksi.setJumlah(rs.getInt("jumlah"));
                 transaksi.setTanggalTransaksi(rs.getTimestamp("tanggal_transaksi"));

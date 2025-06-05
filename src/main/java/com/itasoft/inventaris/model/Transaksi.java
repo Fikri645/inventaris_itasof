@@ -1,20 +1,18 @@
 package com.itasoft.inventaris.model;
 
-import java.sql.Timestamp; // atau java.time.LocalDateTime jika Anda mengonversi
+import java.sql.Timestamp;
 
 public class Transaksi {
     private int id;
-    private int itemId; // atau barangId
+    private int itemId;
+    private String kodeBarang; // <-- Tambahkan ini
+    private String namaBarang;
     private int userId;
+    private String usernamePelaku;
     private String tipeTransaksi; // "MASUK" atau "KELUAR"
     private int jumlah;
     private Timestamp tanggalTransaksi;
     private String keterangan;
-
-    // Opsional: untuk menampilkan nama barang dan user di tabel laporan transaksi
-    private String namaBarang;
-    private String usernamePelaku;
-
 
     public Transaksi() {
     }
@@ -36,12 +34,36 @@ public class Transaksi {
         this.itemId = itemId;
     }
 
+    public String getKodeBarang() { // <-- Tambahkan ini
+        return kodeBarang;
+    }
+
+    public void setKodeBarang(String kodeBarang) { // <-- Tambahkan ini
+        this.kodeBarang = kodeBarang;
+    }
+
+    public String getNamaBarang() {
+        return namaBarang;
+    }
+
+    public void setNamaBarang(String namaBarang) {
+        this.namaBarang = namaBarang;
+    }
+
     public int getUserId() {
         return userId;
     }
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getUsernamePelaku() {
+        return usernamePelaku;
+    }
+
+    public void setUsernamePelaku(String usernamePelaku) {
+        this.usernamePelaku = usernamePelaku;
     }
 
     public String getTipeTransaksi() {
@@ -74,21 +96,5 @@ public class Transaksi {
 
     public void setKeterangan(String keterangan) {
         this.keterangan = keterangan;
-    }
-
-    public String getNamaBarang() {
-        return namaBarang;
-    }
-
-    public void setNamaBarang(String namaBarang) {
-        this.namaBarang = namaBarang;
-    }
-
-    public String getUsernamePelaku() {
-        return usernamePelaku;
-    }
-
-    public void setUsernamePelaku(String usernamePelaku) {
-        this.usernamePelaku = usernamePelaku;
     }
 }
